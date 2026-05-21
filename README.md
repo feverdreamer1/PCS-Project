@@ -20,11 +20,3 @@ Contains the adaptation of the model for a triangular topology (each spin intera
 * **`Triangulo.f90`**: Fortran source code for the triangular lattice.
 * **`.dat` files**: Raw data for the triangular model.
 * **`plot_TR.py` & `plot.py`**: Python scripts to plot the thermodynamic results and compare them with Wannier's exact analytical solution.
-
-## 🚀 How to Run
-
-1. **Run the simulations (Fortran):**
-   Compile the source code using a standard compiler like `gfortran` and run the executable to generate the `.dat` files.
-   ```bash
-   gfortran nnn.f90 randomnumber.f -o ising_sim
-   ./ising_sim
