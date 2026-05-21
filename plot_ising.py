@@ -33,7 +33,7 @@ ax1.axis('off')
 
 ax2.set_xlim(0, 1)
 ax2.set_ylim(T_end, T_start)
-ax2.set_xticks([]) # Quitamos números en el eje X
+ax2.set_xticks([]) X
 ax2.set_ylabel("Temperature ($T$)", fontsize=12)
 
 
@@ -41,7 +41,6 @@ ax2.axhline(Tc, color='red', linestyle='--', linewidth=2)
 ax2.text(1.1, Tc, f'Tc={Tc}', color='red', va='center', fontweight='bold')
 
 
-# [x_inicio, y_inicio, ancho, alto]
 rect = plt.Rectangle((0.2, T_end), 0.6, T_start - T_end, color='royalblue', alpha=0.7)
 ax2.add_patch(rect)
 
@@ -71,10 +70,6 @@ def update(frame):
         print(f"Progreso: {int(frame/frames*100)}% | T = {T_actual:.2f}")
         
     return im, rect
-
-print("Generando animación vertical...")
 ani = animation.FuncAnimation(fig, update, frames=frames, interval=50, blit=True)
 
-# Guardar
 ani.save('ising_termometro.gif', writer='pillow', fps=20,dpi=250)
-print("¡Listo! Archivo 'ising_termometro.gif' creado.")
