@@ -1,10 +1,6 @@
 import numpy as np 
 import matplotlib.pyplot as plt
 from scipy.stats import linregress
-
-# ==============================================================================
-# GLOBAL STYLE (paper-ready)
-# ==============================================================================
 plt.rcParams.update({
     "font.size": 12,
     "axes.labelsize": 13,
@@ -15,9 +11,6 @@ plt.rcParams.update({
     "figure.dpi": 120
 })
 
-# ==============================================================================
-# 1. ONSAGER EXACT SOLUTION (2D ISING)
-# ==============================================================================
 Tc_onsager = 2.0 / np.log(1.0 + np.sqrt(2.0))
 
 def mag_onsager(T):
@@ -29,9 +22,6 @@ T_teorica = np.linspace(1.5, 6.0, 500)
 M_teorica = [mag_onsager(t) for t in T_teorica]
 
 
-# ==============================================================================
-# 2. DATA LOADING
-# ==============================================================================
 def load_data(file):
     data = np.loadtxt(file)
     return {
@@ -49,20 +39,13 @@ d_nn = load_data('termodinamica.dat')
 d_nnn = load_data('termodinamica-next-next.dat')
 
 
-# ==============================================================================
-# 3. THERMODYNAMIC PLOTS (SEPARATED PANELS)
-# ==============================================================================
 def plot_thermodynamics(data, title, filename,
                        include_onsager=False,
                        Tc_sim=None,
                        xlim=(1.5, 6.0)):
     
-    # Extraemos el nombre base sin el .png para añadir sufijos
     base_name = filename.replace('.png', '')
 
-    # --------------------------------------------------------------------------
-    # FIGURA 1: MAGNETIZACIÓN
-    # --------------------------------------------------------------------------
     plt.figure(figsize=(6, 4))
     for n in np.unique(data['N']):
         mask = (data['N'] == n)
@@ -90,9 +73,6 @@ def plot_thermodynamics(data, title, filename,
     plt.savefig(f"{base_name}_mag.png", dpi=300, bbox_inches='tight')
     plt.show()
 
-    # --------------------------------------------------------------------------
-    # FIGURA 2: ENERGÍA
-    # --------------------------------------------------------------------------
     plt.figure(figsize=(6, 4))
     for n in np.unique(data['N']):
         mask = (data['N'] == n)
@@ -116,10 +96,6 @@ def plot_thermodynamics(data, title, filename,
     plt.tight_layout()
     plt.savefig(f"{base_name}_ene.png", dpi=300, bbox_inches='tight')
     plt.show()
-
-    # --------------------------------------------------------------------------
-    # FIGURA 3: CALOR ESPECÍFICO
-    # --------------------------------------------------------------------------
     plt.figure(figsize=(6, 4))
     for n in np.unique(data['N']):
         mask = (data['N'] == n)
@@ -144,10 +120,6 @@ def plot_thermodynamics(data, title, filename,
     plt.savefig(f"{base_name}_cv.png", dpi=300, bbox_inches='tight')
     plt.show()
 
-
-# ==============================================================================
-# 4. FINITE-SIZE SCALING
-# ==============================================================================
 def extract_tc(data):
     Tc_list = []
     invN = []
@@ -160,17 +132,12 @@ def extract_tc(data):
         Tc_list.append(T[np.argmax(C)])
         invN.append(1.0 / n)
 
-    # Use linregress to get standard error of the intercept
     res = linregress(invN, Tc_list)
     return invN, Tc_list, res.slope, res.intercept, res.intercept_stderr
 
 invN_nn, Tc_nn, slope_nn, Tc_inf_nn, err_Tc_inf_nn = extract_tc(d_nn)
 invN_nnn, Tc_nnn, slope_nnn, Tc_inf_nnn, err_Tc_inf_nnn = extract_tc(d_nnn)
 
-
-# ==============================================================================
-# 5. FIGURES
-# ==============================================================================
 
 # NN → ONLY ONSAGER
 plot_thermodynamics(
@@ -192,10 +159,6 @@ plot_thermodynamics(
     xlim=(5.8, 11.1)
 )
 
-
-# ==============================================================================
-# 6. Tc EXTRAPOLATION
-# ==============================================================================
 plt.figure(figsize=(6, 4.5))
 
 plt.plot(invN_nn, Tc_nn, 'o', label='NN data')
@@ -220,13 +183,7 @@ plt.savefig('fig_tc_extrapolation.png', dpi=300)
 plt.show()
 
 
-# ==============================================================================
-# 7. RESULTS
-# ==============================================================================
-print("\n" + "=" * 60)
 print("CRITICAL TEMPERATURE ESTIMATES")
-print("=" * 60)
 print(f"Onsager exact (NN):           Tc = {Tc_onsager:.4f}")
 print(f"Simulation NN (extrapolated): Tc = {Tc_inf_nn:.4f} +/- {err_Tc_inf_nn:.4f}")
 print(f"Simulation NN+NNN (extra.):   Tc = {Tc_inf_nnn:.4f} +/- {err_Tc_inf_nnn:.4f}")
-print("=" * 60)
