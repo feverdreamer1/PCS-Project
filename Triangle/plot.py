@@ -366,8 +366,6 @@ def calculate_nu(T_all,
 
     return nu
 
-print("Loading data...")
-
 d_tri = load_thermo_data(
     r'C:\Users\shara\Desktop\Fisica Sistemas Complejos\TrabajoIising\Triangulo\termodinamica_triangular.dat'
 )
@@ -457,7 +455,7 @@ try:
 
 except OSError:
 
-    print("Warning: correlation file not found.")
+    print(" correlation file not found.")
 
     calc_nu_tri = None
 
