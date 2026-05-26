@@ -28,7 +28,7 @@ program Ising_NNN
         integer*8, allocatable, dimension(:,:) :: S
 
         iseed = 1565867
-        call dran_ini(iseed)
+        call dran_ini(iseed) !For the NN case it sufficees to set J2=0 and to center the interval of temperatures around 2.269 (Onsager)
 
         T_vals = (/ 6.00d0, 6.50d0, 7.00d0, 7.40d0, 7.60d0, 7.80d0, 7.90d0, 7.95d0, 8.02d0, 8.05d0, &
                     8.07d0, 8.09d0, 8.10d0, 8.25d0, 8.30d0, 8.35d0, 8.40d0, 8.50d0, 8.60d0, 8.80d0, &
@@ -48,7 +48,7 @@ program Ising_NNN
             
             if (N >= 256) then
                 pMC_total = 250000
-                write(*,*) ">> Iniciando red N =", N, "(Modo Rápido: 100k pMC)"
+                write(*,*) ">> Iniciando red N =", N, "(Modo RÃ¡pido: 100k pMC)"
             else
                 pMC_total = 1000000
                 write(*,*) ">> Iniciando red N =", N, "(Modo Normal: 1M pMC)"
